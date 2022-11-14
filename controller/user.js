@@ -1,17 +1,22 @@
 
-const USER = require('../models/user'); 
+const bcrypt = require('bcrypt');
+const User = require('../models/user');
 
-exports.signup = (req, res, next) => { 
+
+exports.signup = async (req, res, next) => { 
     console.log(req);
     console.log(req.body);
-    let pass = req.body.password; 
+    let passTmp = req.body.password; 
+
+    let salt = await bcrypt.genSalt(10);
+    let password = await bcrypt.hash(passTmp, salt);
+
     let email = req.body.email; 
 
-    let user = {email, pass};
-    console.log(user);
 
-    // const user = new user({ email, pass});
-    // user.save()
-    // .then(res => res);
+    let user = new User({email, password});
 
+    user.save()
+    .then(data => res.status(201).send(data))
+    .catch(err => console.log(err));
 }
