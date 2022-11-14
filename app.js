@@ -6,6 +6,7 @@ const path = require("path");
 const app  = express(); 
 
 const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce');
 // const imagesRoutes = require('./routes/image');
 
 mongoose.connect('mongodb://127.0.0.1:27017/piquante', function(err) {
@@ -28,10 +29,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // app.use('/public', express.static(path.join(__dirname, "./public")));
-app.use(express.static('public'));
+app.use('/public', express.static('public'));
 // , express.static(path.join(__dirname, "./public")));
 
 app.use('/api/auth', userRoutes);
-
+app.use('/api/sauces', sauceRoutes);
 
 module.exports = app;
