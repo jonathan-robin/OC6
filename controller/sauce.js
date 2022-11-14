@@ -1,4 +1,5 @@
 const Sauce = require('../models/sauce')
+const fs = require('fs');
 
 // Récuperer la liste de toutes les sauces
 exports.getSauces =  (req, res, next) => {
@@ -31,4 +32,25 @@ exports.updateSauce = (req, res, next) => {
     Sauce.updateOne({ _id: req.params.id }, sauceTmp)
         .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
         .catch(error => res.status(400).json({ error }))
+}
+
+exports.deleteSauce = (req, res, next) => { 
+   console.log(req.params.id); 
+
+
+
+
+   Sauce.findOne({ _id: req.params.id})
+   .then(sauce => { 
+    console.log(sauce.imageUrl);
+
+    console.log(sauce.imageUrl.split('/public/')[1]); 
+    fs.unlink('public/'+sauce.imageUrl.split('/public/')[1], (err) => {
+        if (err){ console.log(err); }
+        Sauce.deleteOne({ _id: req.params.id})
+            .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
+            .catch(error => res.status(400).json({ error: error }))
+    })
+   })
+
 }
