@@ -25,14 +25,12 @@ exports.login = async (req, res, next) => {
     let email = req.body.email; 
     let password = req.body.password; 
 
-    console.log({email});
-    console.log({password});
-     
     const user = await User.findOne({ email }); 
     if (user){ 
         // check user pass with hashed pass stored in db
         const validPass = await bcrypt.compare(password, user.password); 
         validPass ? res.status(200).json({ message: "Valid pass"}) : res.status(400).json({ error: 'Invalid pass'});
+    }else{
+        res.status(401).json({ error: 'User doesn\'t exist' });
     }
-    res.status(401).json({ error: 'User doesn\'t exist' });
 }
