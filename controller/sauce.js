@@ -10,7 +10,7 @@ exports.getSauces =  (req, res, next) => {
 // Créer une sauce
 exports.addSauce = (req, res, next) => {
     let sauceTmp = JSON.parse(req.body.sauce); 
-    sauceTmp.imageUrl = '../public/'+ req.file.filename; 
+    sauceTmp.imageUrl = 'http://localhost:3000/public/'+ req.file.filename; 
     const sauce = new Sauce(sauceTmp); 
     sauce.save()
     .then(() => res.status(201).json({ message: 'Sauce enregistré !' }))
@@ -22,4 +22,13 @@ exports.getSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error: error }))
+}
+
+exports.updateSauce = (req, res, next) => { 
+    let sauceTmp = req.file ? JSON.parse(req.body.sauce) : req.body; 
+    req.file ? sauceTmp.imageUrl = 'http:localhost:3000/public'+req.file.filename : null; 
+
+    Sauce.updateOne({ _id: req.params.id }, sauceTmp)
+        .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
+        .catch(error => res.status(400).json({ error }))
 }
