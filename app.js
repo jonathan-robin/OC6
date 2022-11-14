@@ -1,11 +1,12 @@
 const mongoose = require('mongoose'); 
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const path = require("path");
 
 const app  = express(); 
 
 const userRoutes = require('./routes/user');
+// const imagesRoutes = require('./routes/image');
 
 mongoose.connect('mongodb://127.0.0.1:27017/piquante', function(err) {
     if (err) { throw err; }
@@ -26,6 +27,11 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json());
 
+// app.use('/public', express.static(path.join(__dirname, "./public")));
+app.use(express.static('public'));
+// , express.static(path.join(__dirname, "./public")));
+
 app.use('/api/auth', userRoutes);
+
 
 module.exports = app;
