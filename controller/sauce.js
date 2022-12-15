@@ -46,8 +46,6 @@ exports.updateSauce = async (req, res, next) => {
 }
 
 exports.deleteSauce = (req, res, next) => { 
-
-
    Sauce.findOne({ _id: req.params.id})
    .then(sauce => { 
     console.log(sauce.imageUrl);
@@ -62,25 +60,25 @@ exports.deleteSauce = (req, res, next) => {
    })
 }
 exports.rateSauce = (req, res, next) => {
-
+    console.log(req.body)
     switch (req.body.like){ 
         case 1: 
             Sauce.updateOne({ _id: req.params.id }, {$inc : { likes: req.body.like++ }, $push:{ usersLiked: req.body.userId }} )
-                .then((sauce) => res.status(200)).catch(error => res.status(400).json({ error }))
+                .then((sauce) => { console.log(sauce); res.status(200).json({ message: 'Sauce modified' })}).catch(error => json({ error }))
         break; 
         case -1:
             Sauce.updateOne({ _id: req.params.id },  { $inc: { dislikes: (req.body.like++) * -1 }, $push: { usersDisliked: req.body.userId } })
-                .then((sauce) => res.status(200)).catch(error => res.status(400).json({ error }))
+                .then((sauce) =>  { console.log(sauce); res.status(200).json({ message: 'Sauce modified' })}).catch(error => json({ error }))
         break; 
         default : 
             Sauce.findOne({ _id: req.params.id })
                 .then(sauce => {
                     if (sauce.usersLiked.includes(req.body.userId)) {
                         Sauce.updateOne({ _id: req.params.id }, { $pull: { usersLiked: req.body.userId }, $inc: { likes: -1 } })
-                            .then((sauce) => { res.status(200) }).catch(error => res.status(400).json({ error }))
+                            .then((sauce) => { console.log(sauce); res.status(200).json({ message: 'Sauce modified' }) }).catch(error => json({ error }))
                     } else if (sauce.usersDisliked.includes(req.body.userId)) {
                         Sauce.updateOne({ _id: req.params.id }, { $pull: { usersDisliked: req.body.userId }, $inc: { dislikes: -1 } })
-                            .then((sauce) => { res.status(200) }).catch(error => res.status(400).json({ error }))
+                            .then((sauce) => { console.log(sauce); res.status(200).json({ message: 'Sauce modified' }) }).catch(error => json({ error }))
                     }
                 })
 
