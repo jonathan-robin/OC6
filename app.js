@@ -8,6 +8,7 @@ const sauceRoutes = require('./routes/sauce');
 
 // connect to mongoose and log OK or error
 mongoose.connect(`mongodb+srv://${process.env.CLUSTER_NAME}:${process.env.CLUSTER_PASSWORD}@cluster0.tql2svr.mongodb.net/piquante`, function(err) {
+// mongoose.connect('mongodb+srv://OpenClassrooms:OpenClassrooms@cluster0.tql2svr.mongodb.net/piquante', function(err) {
     if (err) throw err;
     else console.log('connexion mongoose OK');
 })
