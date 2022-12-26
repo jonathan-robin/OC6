@@ -1,15 +1,14 @@
-const mongoose = require('mongoose'); // import mongoose for server and db
+const mongoose = require('mongoose') // import mongoose for server and db
 const express = require('express'); // import express for http routes
 const bodyParser = require('body-parser'); // bodyParser for use json in body req
-
 const app  = express(); 
-
+require('dotenv').config(); // import the dotenv to access global var
 // import routes 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
 // connect to mongoose and log OK or error
-mongoose.connect('mongodb://127.0.0.1:27017/piquante', function(err) {
+mongoose.connect(`mongodb+srv://${process.env.CLUSTER_NAME}:${process.env.CLUSTER_PASSWORD}@cluster0.tql2svr.mongodb.net/piquante`, function(err) {
     if (err) throw err;
     else console.log('connexion mongoose OK');
 })
