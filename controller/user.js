@@ -7,7 +7,7 @@ exports.signup = async (req, res, next) => {
     let password = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10)); // hash the password with a bcrypt genSalt
     let user = new User({email:req.body.email, password}); // create new user
     // then save it, if no error send back 201 status code, catch if err 11000 theres already email in use : else throw err
-    user.save().then(data =>res.status(201).send(data)).catch((err) => {console.log(err); err.code === 11000 ? res.status(500).send('Email already in use') : res.status(500).send({err}) });// 
+    user.save().then(data =>res.status(201).send(data)).catch((err) => err.code === 11000 ? res.status(500).send('Email already in use') : res.status(500).send({err}));// 
 }
 
 exports.login = async (req, res, next) => {
