@@ -1,6 +1,5 @@
 const mongoose = require('mongoose') // import mongoose for server and db
 const express = require('express'); // import express for http routes
-const bodyParser = require('body-parser'); // bodyParser for use json in body req
 const app  = express(); 
 require('dotenv').config(); // import the dotenv to access global var
 // import routes 
@@ -21,10 +20,6 @@ app.use((req, res, next) => {
     res.setHeader('Content-Type', 'application/json')
     next()
 })
-
-// parse in json the body for requests
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 app.use('/public', express.static('public')); // use it for public pictures
 
