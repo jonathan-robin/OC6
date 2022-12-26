@@ -6,7 +6,7 @@ exports.getSauce = (req, res, next) => Sauce.findOne({ _id: req.params.id }).the
 // Create a sauce
 exports.addSauce = (req, res, next) => {
     let sauceTmp = JSON.parse(req.body.sauce); // get the url to modify it
-    sauceTmp.imageUrl = './public/'+ req.file.filename; 
+    sauceTmp.imageUrl = 'http://localhost:3000/public/'+ req.file.filename; 
     new Sauce(sauceTmp).save().then(res.status(201).json(`Sauce id: ${sauceTmp._id} added`)).catch(error => res.status(400).json({ error })) // create a new sauce model then insert it to db 
 }
 // Update a sauce
@@ -14,7 +14,7 @@ exports.updateSauce = async (req, res, next) => {
     // get former data sauce with the id
     let formerSauce = await Sauce.findOne({ _id: req.params.id }).then()
     let sauceTmp = req.file ? JSON.parse(req.body.sauce) : req.body; 
-    req.file ? sauceTmp.imageUrl = './public/'+req.file.filename : null;
+    req.file ? sauceTmp.imageUrl = 'http://localhost:3000/public/'+req.file.filename : null;
     // initialize for sauce updates
     let updatesMessage = '';
     // compare which entries has changed and push into string
