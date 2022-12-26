@@ -5,6 +5,7 @@ require('dotenv').config(); // import the dotenv to access global var
 // import routes 
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
+app.use(express.json());
 
 // connect to mongoose and log OK or error
 mongoose.connect(`mongodb+srv://${process.env.CLUSTER_NAME}:${process.env.CLUSTER_PASSWORD}@cluster0.tql2svr.mongodb.net/piquante`, function(err) {
