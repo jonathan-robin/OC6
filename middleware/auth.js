@@ -1,17 +1,13 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); // import for hashing password
+require('dotenv').config(); // import the dotenv to access global var
 
 module.exports = (req, res, next) => {
     try {
-        const token = req.headers.authorization.split(' ')[1]
-        console.log(token);
-        const decodedToken = jwt.verify(token, `1234`)
+        const token = req.headers.authorization.split(' ')[1] // get the token from request
+        const decodedToken = jwt.verify(token, process.env.JWTOKEN) // verify the token
         const userId = decodedToken.userId
-        if (req.body.userId && req.body.userId !== userId) {
-            throw 'User ID non valable !'
-        } else {
-            next()
-        }
-    } catch (error) {
-        res.status(401).json({ error: error | 'Requête non-authentifiée !' })
-    }
+        if (req.body.userId && req.body.userId !== userId) throw 'Invalid user' // if decoded token can't be verify throw err
+        else next();
+    } catch (error) { res.status(401).json(`Unsufficient permission: ${error}`) }
+    
 };

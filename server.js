@@ -1,13 +1,9 @@
-const http = require('http'); 
-const app = require('./app');
+const http = require('http'); // http to create server
+const app = require('./app'); // import app
+const port = 3000; // instantiate port number
 
-const port = 3000;
-
-app.set('port', port);
+app.set('port', port); // set the port 
 const server = http.createServer(app); 
 
-server.on('listening', () => { 
-    console.log('listening on ' + port);   
-})
-
-server.listen(port);
+server.listen(port); // listening on port 
+server.on('listening', () => console.log('listening on ' + port)); // log when server is running
